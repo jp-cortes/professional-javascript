@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch-abort</title>
+</head>
+<body>
+    <a href="./">Go back</a>
+    <p><em>Open the console</em></p>
+    <img id="huge-image" height="500"/>
+
+    <button id="load">Load HUGE Image</button>
+    <button id="stop">Stop Fetching</button>
+    <script>
+        //the AJAX allow to make asycn request without stoping the load of the website
+        //today fetch is use for this
+        //. fetch() is having AbortController() which allow to  sent  a signal in the meddle of th execution  to stop it
+        //AbortController() will give us 2 controller to stop the execision.
+        //this example will be  te option that fetch
+
+
+        const url = 'https://images.pexels.com/photos/11536576/pexels-photo-11536576.jpeg?auto=compress&cs=tinysrgb&w=600';
+        const img = document.getElementById('huge-image');
+        const loadButton = document.getElementById('load');
+        const stopButton = document.getElementById('stop');
+        let controller;
+
+        function startLoading() {
+
+            loadButton.disabled = true;
+            loadButton.innerText = 'loading...'
+            stopButton.disabled = false;
+        }
+        function stopLoading() {
+            loadButton.disabled = false;
+            loadButton.innerText = 'Load HUGE Image'
+            stopButton.disabled = true;
+        }
+
+        loadButton.onclick = async function() {
+            //starLoading only change the apperance of the button
+            startLoading();
+            //declare the variable bfore then we'll have access to it
+            controller = new AbortController();
+
+            try {
+                const response = await fetch(url, { signal: controller.signal });
+                //get the binary   of the image with .blob()
+                const blob = await response.blob();
+                //URL is a web prooerty will asign  a url to the binary .blop()
+                const imgURL = URL.createObjectURL(blob);
+                img.src = imgURL;
+                
+            } catch (error) {
+                    console.log(error.message)
+                }
+                //when the function fail we will call stopLoading
+                stopLoading();
+        }
+        stopButton.onclick = function() {
+            //abrt sent the signal to fetch and cancel the request
+            controller.abort();
+            startLoading();
+        }
+    </script>
+    
+</body>
+</html>

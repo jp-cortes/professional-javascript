@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function.prototype.call, Function.protoype.apply, Function.prototype.bind</title>
+</head>
+<body>
+    <h1>Function.prototype.call, Function.protoype.apply, Function.prototype.bind</h1>
+    <a href="./">Back to Home</a>
+    <p>Open the console</p>
+     <ul>
+        <li><button class="call-to-action">Learn</button></li>
+        <li><button class="call-to-action">Keep learning</button></li>
+        <li><button class="call-to-action">Don't stop learning</button></li>
+     </ul>
+    
+    <script>
+        // functions by defaul have  call(), apply(), bind()
+        //'this' using 'call'
+        function greetings() {
+            console.log(`Hi I'm ${this.name} ${this.lastName}`);
+        }
+
+        const jhonny = {
+            name: 'Jhonny',
+            lastName: 'Cage',
+        };
+        //call use to call a function
+        greetings.call(jhonny);
+
+        //'this' using 'call' to call a function
+        function walking(distance, direction) {
+            console.log(`${this.name} walks ${distance} metters to the ${direction}`);
+        }
+         walking.call(jhonny, 400, 'north');
+
+         //'this' using 'apply'
+         //apply needs arguments in a  array
+         walking.apply(jhonny, [400, 'west']);
+
+         const arguments = [800, 'north-west'];
+         walking.apply(jhonny, arguments);
+
+         /*
+         Call - separated by commas
+         Apply - Array
+         */
+
+        //'this' using 'bind'
+        //.bind() will not call the function is use to build  a new function
+        const terry = {name: 'Terry', lastName: "Bogard"};
+        const terryGreets = greetings.bind(terry);
+        terryGreets();
+
+        const terryWalks = walking.bind(terry, 2000);
+        terryWalks('east');
+
+        //useful  situations to use this methods
+        const buttons = document.getElementsByClassName('call-to-action');
+        // buttons.forEach(button => {
+        //     button.onclick = () => alert("Don't stop learning");            
+        // });
+
+        Array.prototype.forEach.call(buttons, button => {
+            button.onclick = () => alert("Don't stop learning");
+        });
+         </script>
+</body>
+</html>

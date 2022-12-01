@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This</title>
+</head>
+<body>
+    <h1>This  is  the object which executing thee code</h1>
+    <p>Open the console</p>
+    <a href="./">Back to home</a>
+
+    <script>
+        //this in the global scope
+        console.log(`global scope: ${this}`);
+
+        //this in a function scope
+        function whoIsThis() {
+            return this;
+        }
+        console.log(`Function whoIsThis(): ${whoIsThis()}`);
+
+        //this in a fucntion with strict mode
+        function whoIsThisStrict() {
+            'use strict';
+            return this;
+        }
+        console.log(`Function whoIsThisStrict(): ${whoIsThisStrict()}`);
+
+        //this in a object contex
+        const persona = {
+            name: "Jhonny",
+            greet: function() {
+                console.log(`Object persona... Hi I am ${this.name}`);
+            }
+        };
+        persona.greet();
+
+        //this whe you take a function of an object
+        const action = persona.greet;
+                                            action();
+        console.log('Function of an object: ', '👆');
+
+        //this in the conntext of a class prototype
+        function Person(name) {
+            //this = {}
+            this.name = name;
+        }
+
+        Person.prototype.greetings = function() {
+            console.log(`My name is: ${this.name}`)
+        };
+
+        const sonia = new Person('Sonia');
+        sonia.greetings();
+
+    </script>
+    
+</body>
+</html>

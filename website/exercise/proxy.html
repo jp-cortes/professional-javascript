@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy</title>
+</head>
+<body>
+    <a href="./">Go back</a>
+    <h1>Proxy  work like getters & setters, but powerfull.</h1>
+    <p>The Object proxy allow  create a "middleman"  for another Object, may intercept and redefine the operatios for the that object</p>
+    <script src="./Levenshein.js"></script>
+    <!-- <script src="https://unpkg.com/fast-levenshtein@2.0.6/levenshtein.js"></script> -->
+    <script>
+       //proxy is similar to getter & setters
+       //use  a concept call traps: those are interceptors of calls.
+       //it does not work on a property  like  getters, works over an object.
+       
+// import { Levenshtein } from './Levenshein.js'
+       const target = {
+        blue: 'azul',
+        green: 'verde',
+        white: 'blanco',
+       };
+       const handler = {
+        get(object, property) {
+            if(property in object) {
+                return object[property];
+            }
+            const suggestion = Object.keys(object).find(key => {
+                return Levenshtein.get(key, property)<= 3;
+            });
+            if(suggestion) {
+                console.log(`It doesn't exist ${property}, Did you mean ${suggestion}`);
+            }
+            return object[property];
+        },
+       };
+       const p = new Proxy(target, handler);
+
+    </script>
+    
+</body>
+</html>
